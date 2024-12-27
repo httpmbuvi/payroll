@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payroll Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+        }
+
+        body {
+            background-color: #f5f6fa;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: var(--primary);
+            color: white;
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-menu {
+            margin-top: 30px;
+        }
+
+        .nav-item {
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+
+        .nav-item:hover {
+            background-color: var(--secondary);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-bar input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        /* Dashboard Cards */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* Employee Table */
+        .employee-table {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: var(--light);
+        }
+
+        .action-buttons button {
+            padding: 5px 10px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .edit-btn {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        /* Forms */
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .submit-btn {
+            background-color: var(--success);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+        }
+
+        .salary-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .salary-input span {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .salary-text {
+            display: block;
+            margin-top: 5px;
+            color: #666;
+            font-size: 12px;
+            font-style: italic;
+        }
+
+        .salary-input input {
+            padding-left: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                Linus payrolll
+            </div>
+            <div class="nav-menu">
+                <div class="nav-item">Dashboard</div>
+                <div class="nav-item">Employees</div>
+                <div class="nav-item">Payroll</div>
+                <div class="nav-item">Reports</div>
+                <div class="nav-item">Settings</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <h2>Dashboard</h2>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search...">
+                    <button class="submit-btn">Search</button>
+                </div>
+            </div>
+
+            <!-- Dashboard Cards -->
+            <div class="dashboard-cards">
+                <div class="card">
+                    <h3>Total Employees</h3>
+                    <p>200</p>
+                </div>
+                <div class="card">
+                    <h3>Total Payroll</h3>
+                    <p>ksh45,000</p>
+                </div>
+                <div class="card">
+                    <h3>Pending Approvals</h3>
+                    <p>5</p>
+                </div>
+                <div class="card">
+                    <h3>This Month's Budget</h3>
+                    <p>ksh30,000</p>
+                </div>
+            </div>
+
+            <!-- Employee Table -->
+            <div class="employee-table">
+                <h3>Employee List</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Position</th>
+                            <th>Salary</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>Anthony</td>
+                            <td>IT</td>
+                            <td>Developer</td>
+                            <td>Ksh50,000</td>
+                            <td class="action-buttons">
+                                <button class="edit-btn">Edit</button>
+                                <button class="delete-btn">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>002</td>
+                            <td>Jane Smith</td>
+                            <td>HR</td>
+                            <td>Manager</td>
+                            <td>ksh6,500</td>
+                            <td class="action-buttons">
+                                <button class="edit-btn">Edit</button>
+                                <button class="delete-btn">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add this function at the beginning of your script section
+        function initializeEmployeeData() {
+            if (!localStorage.getItem('employees')) {
+                localStorage.setItem('employees', JSON.stringify([]));
+            }
+            return JSON.parse(localStorage.getItem('employees'));
+        }
+
+        // Define content for different sections
+        const sectionContent = {
+            dashboard: `
+                <div class="header">
+                    <h2>Dashboard</h2>
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search...">
+                        <button class="submit-btn">Search</button>
+                    </div>
+                </div>
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <h3>Total Employees</h3>
+                        <p>150</p>
+                    </div>
+                    <div class="card">
+                        <h3>Total Payroll</h3>
+                        <p>$245,000</p>
+                    </div>
+                    <div class="card">
+                        <h3>Pending Approvals</h3>
+                        <p>5</p>
+                    </div>
+                    <div class="card">
+                        <h3>This Month's Budget</h3>
+                        <p>$300,000</p>
+                    </div>
+                </div>
+            `,
+            employees: `
+                <div class="header">
+                    <h2>Employee Management</h2>
+                    <button class="submit-btn" onclick="showAddEmployeeForm()">Add New Employee</button>
+                </div>
+                <div class="employee-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Department</th>
+                                <th>Position</th>
+                                <th>Salary</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            `,
+            payroll: `
+                <div class="header">
+                    <h2>Payroll Management</h2>
+                </div>
+                <div class="payroll-section">
+                    <div class="card">
+                        <h3>Generate Payroll</h3>
+                        <form id="payrollForm" class="payroll-form">
+                            <div class="form-group">
+                                <label>Select Month</label>
+                                <input type="month" id="payrollMonth" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Department</label>
+                                <select id="payrollDepartment">
+                                    <option value="">All Departments</option>
+                                    <option value="IT">IT</option>
+                                    <option value="HR">HR</option>
+                                    <option value="Finance">Finance</option>
+                                    <option value="Marketing">Marketing</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="submit-btn">Generate Payroll</button>
+                        </form>
+                    </div>
+                    <div id="payrollResults" class="card" style="display: none;">
+                        <h3>Payroll Results</h3>
+                        <div class="payroll-summary">
+                            <div id="payrollTable"></div>
+                            <div class="payroll-totals"></div>
+                        </div>
+                        <button onclick="downloadPayrollPDF()" class="submit-btn">Download PDF</button>
+                    </div>
+                    <div class="card">
+                        <h3>Payroll History</h3>
+                        <div id="payrollHistory"></div>
+                    </div>
+                </div>
+            `,
+            reports: `
+                <div class="header">
+                    <h2>Reports</h2>
+                </div>
+                <div class="reports-grid">
+                    <div class="card">
+                        <h3>Payroll Reports</h3>
+                        <p>Generate comprehensive payroll reports including salary details and deductions.</p>
+                        <button class="submit-btn" onclick="generatePayrollReport()">Generate Report</button>
+                    </div>
+                    <div class="card">
+                        <h3>Employee Reports</h3>
+                        <p>View detailed employee information grouped by department.</p>
+                        <button class="submit-btn" onclick="generateEmployeeReport()">Generate Report</button>
+                    </div>
+                    <div class="card">
+                        <h3>Tax Reports</h3>
+                        <p>Generate tax reports including PAYE, NHIF, and NSSF deductions.</p>
+                        <button class="submit-btn" onclick="generateTaxReport()">Generate Report</button>
+                    </div>
+                </div>
+            `,
+            settings: `
+                <div class="header">
+                    <h2>Settings</h2>
+                </div>
+                <div class="settings-section">
+                    <div class="card">
+                        <h3>System Settings</h3>
+                        <form id="settingsForm" class="settings-form">
+                            <div class="form-group">
+                                <label>Company Name</label>
+                                <input type="text" id="companyName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Tax Rate (%)</label>
+                                <input type="number" id="taxRate" min="0" max="100" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Pay Day</label>
+                                <input type="number" id="payDay" min="1" max="31" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Deductions</label>
+                                <div class="checkbox-group">
+                                    <label>
+                                        <input type="checkbox" id="nhifEnabled"> Enable NHIF
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" id="nssfEnabled"> Enable NSSF
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" id="payeEnabled"> Enable PAYE
+                                    </label>
+                                </div>
+                            </div>
+                            <button type="submit" class="submit-btn">Save Settings</button>
+                        </form>
+                    </div>
+                </div>
+            `
+        };
+
+        // Get main content div and nav items
+        const mainContent = document.querySelector('.main-content');
+        const navItems = document.querySelectorAll('.nav-item');
+
+        // Add click event listeners to nav items
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove active class from all nav items
+                navItems.forEach(nav => nav.classList.remove('active'));
+                
+                // Add active class to clicked item
+                this.classList.add('active');
+                
+                // Get section name from nav item text
+                const section = this.textContent.toLowerCase();
+                
+                // Update main content
+                mainContent.innerHTML = sectionContent[section];
+                
+                // Initialize section-specific functionality
+                if(section === 'employees') {
+                    updateEmployeeTable();
+                } else if(section === 'payroll') {
+                    initializePayrollSection();
+                } else if(section === 'settings') {
+                    initializeSettingsForm();
+                }
+            });
+        });
+
+        // Initialize employee section functionality
+        function initializeEmployeeSection() {
+            const editButtons = document.querySelectorAll('.edit-btn');
+            const deleteButtons = document.querySelectorAll('.delete-btn');
+            
+            editButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    const id = row.cells[0].textContent;
+                    alert(`Editing employee ${id}`);
+                });
+            });
+            
+            deleteButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    const id = row.cells[0].textContent;
+                    if(confirm('Are you sure you want to delete this employee?')) {
+                        row.remove();
+                    }
+                });
+            });
+        }
+
+        // Initialize payroll section functionality
+        function initializePayrollSection() {
+            const payrollForm = document.getElementById('payrollForm');
+            if (payrollForm) {
+                payrollForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    generatePayroll();
+                });
+            }
+            displayPayrollHistory();
+        }
+
+        // Add some additional styles
+        const style = document.createElement('style');
+        style.textContent = `
+            .nav-item.active {
+                background-color: var(--secondary);
+            }
+            
+            .payroll-form, .settings-form {
+                padding: 20px;
+            }
+            
+            .reports-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            select {
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                margin-bottom: 10px;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize dashboard view
+        document.querySelector('.nav-item').click();
+
+        function showAddEmployeeForm() {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Add New Employee</h2>
+                    <div class="form-container">
+                        <form id="addEmployeeForm">
+                            <div class="form-scroll">
+                                <div class="form-group">
+                                    <label>Employee ID</label>
+                                    <input type="text" id="empId" required 
+                                        pattern="EMP[0-9]{3}" 
+                                        title="ID format: EMP followed by 3 numbers"
+                                        placeholder="e.g., EMP001">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Full Name</label>
+                                    <input type="text" id="empName" required
+                                        placeholder="Enter full name">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Department</label>
+                                    <select id="empDepartment" required>
+                                        <option value="">Select Department</option>
+                                        <option value="IT">IT</option>
+                                        <option value="HR">HR</option>
+                                        <option value="Finance">Finance</option>
+                                        <option value="Marketing">Marketing</option>
+                                        <option value="Sales">Sales</option>
+                                        <option value="Operations">Operations</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Position</label>
+                                    <input type="text" id="empPosition" required
+                                        list="positions"
+                                        placeholder="Select or type position">
+                                    <datalist id="positions">
+                                        <option value="Manager">
+                                        <option value="Developer">
+                                        <option value="Analyst">
+                                        <option value="Designer">
+                                        <option value="Coordinator">
+                                        <option value="Supervisor">
+                                    </datalist>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Salary (KES)</label>
+                                    <div class="salary-input">
+                                        <span>KES</span>
+                                        <input type="number" 
+                                            id="empSalary" 
+                                            required
+                                            min="0" 
+                                            step="1000"
+                                            placeholder="Enter salary in KES"
+                                            onchange="formatKESAmount(this)"
+                                            onkeyup="formatKESAmount(this)">
+                                    </div>
+                                    <small class="salary-text"></small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" id="empEmail" required
+                                        placeholder="employee@company.com">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Join Date</label>
+                                    <input type="date" id="empJoinDate" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Contact Number</label>
+                                    <input type="tel" id="empPhone"
+                                        pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                                        placeholder="123-456-7890">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Address</label>
+                                    <textarea id="empAddress" rows="3"
+                                        placeholder="Enter full address"></textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="form-buttons">
+                                <button type="button" class="cancel-btn">Cancel</button>
+                                <button type="submit" class="submit-btn">Add Employee</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+
+            // Add enhanced styles
+            const style = document.createElement('style');
+            style.textContent = `
+                .modal-content {
+                    max-height: 90vh;
+                    overflow: hidden;
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                .form-container {
+                    flex: 1;
+                    overflow: hidden;
+                }
+
+                .form-scroll {
+                    max-height: calc(90vh - 180px);
+                    overflow-y: auto;
+                    padding: 20px;
+                    padding-right: 15px;
+                    margin-right: -15px;
+                    scroll-behavior: smooth;
+                }
+
+                .form-scroll::-webkit-scrollbar {
+                    width: 8px;
+                }
+
+                .form-scroll::-webkit-scrollbar-track {
+                    background: #f1f1f1;
+                    border-radius: 4px;
+                }
+
+                .form-scroll::-webkit-scrollbar-thumb {
+                    background: #888;
+                    border-radius: 4px;
+                }
+
+                .form-scroll::-webkit-scrollbar-thumb:hover {
+                    background: #555;
+                }
+
+                .form-group {
+                    margin-bottom: 20px;
+                    transition: all 0.3s ease;
+                }
+
+                .form-group:focus-within {
+                    transform: translateX(5px);
+                }
+
+                .form-group input,
+                .form-group select,
+                .form-group textarea {
+                    width: 100%;
+                    padding: 10px;
+                    border: 1px solid #ddd;
+                    border-radius: 5px;
+                    font-size: 14px;
+                    transition: all 0.3s ease;
+                }
+
+                .form-group input:focus,
+                .form-group select:focus,
+                .form-group textarea:focus {
+                    border-color: var(--secondary);
+                    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+                    outline: none;
+                }
+
+                .salary-input {
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+                }
+
+                .salary-input span {
+                    font-size: 16px;
+                    color: #666;
+                }
+
+                .form-buttons {
+                    position: sticky;
+                    bottom: 0;
+                    background: white;
+                    padding: 15px 0;
+                    border-top: 1px solid #eee;
+                    display: flex;
+                    justify-content: flex-end;
+                    gap: 10px;
+                }
+
+                .form-group label {
+                    display: block;
+                    margin-bottom: 5px;
+                    color: #333;
+                    font-weight: 500;
+                }
+
+                input:invalid {
+                    border-color: #e74c3c;
+                }
+
+                .progress-bar {
+                    height: 3px;
+                    background: #eee;
+                    position: sticky;
+                    top: 0;
+                    width: 100%;
+                }
+
+                .progress-fill {
+                    height: 100%;
+                    background: var(--secondary);
+                    width: 0%;
+                    transition: width 0.3s ease;
+                }
+            `;
+            document.head.appendChild(style);
+            document.body.appendChild(modal);
+
+            // Add scroll progress indicator
+            const form = modal.querySelector('#addEmployeeForm');
+            const formScroll = modal.querySelector('.form-scroll');
+            
+            formScroll.addEventListener('scroll', () => {
+                const scrollPercent = (formScroll.scrollTop / 
+                    (formScroll.scrollHeight - formScroll.clientHeight)) * 100;
+                const progressFill = modal.querySelector('.progress-fill');
+                if (progressFill) {
+                    progressFill.style.width = `${scrollPercent}%`;
+                }
+            });
+
+            // Close modal functionality
+            const closeBtn = modal.querySelector('.close');
+            const cancelBtn = modal.querySelector('.cancel-btn');
+            const closeModal = () => {
+                modal.remove();
+                style.remove();
+            };
+
+            closeBtn.onclick = closeModal;
+            cancelBtn.onclick = closeModal;
+
+            // Form submission handling
+            form.onsubmit = function(e) {
+                e.preventDefault();
+                
+                // Get all form values
+                const newEmployee = {
+                    id: document.getElementById('empId').value,
+                    name: document.getElementById('empName').value,
+                    department: document.getElementById('empDepartment').value,
+                    position: document.getElementById('empPosition').value,
+                    salary: document.getElementById('empSalary').value,
+                    email: document.getElementById('empEmail').value,
+                    joinDate: document.getElementById('empJoinDate').value,
+                    phone: document.getElementById('empPhone').value,
+                    address: document.getElementById('empAddress').value
+                };
+
+                // Save to localStorage
+                const employees = initializeEmployeeData();
+                employees.push(newEmployee);
+                localStorage.setItem('employees', JSON.stringify(employees));
+
+                // Update the table
+                updateEmployeeTable();
+
+                // Success message
+                alert('Employee added successfully!');
+                closeModal();
+            };
+        }
+
+        // Add function to convert numbers to words
+        function numberToWords(num) {
+            const ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+            const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+            const teens = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+
+            if (num === 0) return 'Zero';
+
+            function convert(n) {
+                if (n < 10) return ones[n];
+                if (n < 20) return teens[n - 10];
+                if (n < 100) return tens[Math.floor(n / 10)] + (n % 10 ? ' ' + ones[n % 10] : '');
+                if (n < 1000) return ones[Math.floor(n / 100)] + ' Hundred' + (n % 100 ? ' and ' + convert(n % 100) : '');
+                if (n < 1000000) return convert(Math.floor(n / 1000)) + ' Thousand' + (n % 1000 ? ' ' + convert(n % 1000) : '');
+                if (n < 1000000000) return convert(Math.floor(n / 1000000)) + ' Million' + (n % 1000000 ? ' ' + convert(n % 1000000) : '');
+                return convert(Math.floor(n / 1000000000)) + ' Billion' + (n % 1000000000 ? ' ' + convert(n % 1000000000) : '');
+            }
+
+            return convert(parseInt(num));
+        }
+
+        // Add function for formatting KES amounts
+        function formatKESAmount(input) {
+            // Remove any non-numeric characters
+            let value = input.value.replace(/[^0-9]/g, '');
+            
+            // Format number with thousands separator
+            const formattedValue = new Intl.NumberFormat('en-KE', {
+                style: 'currency',
+                currency: 'KES',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(value);
+            
+            // Display formatted amount in text below
+            const salaryText = input.closest('.form-group').querySelector('.salary-text');
+            salaryText.textContent = `Amount in words: ${numberToWords(value)} Kenyan Shillings`;
+        }
+
+        // Add this new function to update the employee table
+        function updateEmployeeTable() {
+            const tbody = document.querySelector('.employee-table tbody');
+            const employees = initializeEmployeeData();
+            
+            tbody.innerHTML = ''; // Clear existing rows
+            
+            employees.forEach((employee, index) => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${employee.id}</td>
+                    <td>${employee.name}</td>
+                    <td>${employee.department}</td>
+                    <td>${employee.position}</td>
+                    <td>KES ${new Intl.NumberFormat('en-KE').format(employee.salary)}</td>
+                    <td class="action-buttons">
+                        <button class="edit-btn" onclick="editEmployee(${index})">Edit</button>
+                        <button class="delete-btn" onclick="deleteEmployee(${index})">Delete</button>
+                    </td>
+                `;
+            });
+        }
+
+        // Add these new functions for edit and delete functionality
+        function deleteEmployee(index) {
+            if (confirm('Are you sure you want to delete this employee?')) {
+                const employees = initializeEmployeeData();
+                employees.splice(index, 1);
+                localStorage.setItem('employees', JSON.stringify(employees));
+                updateEmployeeTable();
+            }
+        }
+
+        function editEmployee(index) {
+            const employees = initializeEmployeeData();
+            const employee = employees[index];
+            
+            showAddEmployeeForm(); // Reuse the add form
+            
+            // Fill the form with employee data
+            document.getElementById('empId').value = employee.id;
+            document.getElementById('empName').value = employee.name;
+            document.getElementById('empDepartment').value = employee.department;
+            document.getElementById('empPosition').value = employee.position;
+            document.getElementById('empSalary').value = employee.salary;
+            document.getElementById('empEmail').value = employee.email;
+            document.getElementById('empJoinDate').value = employee.joinDate;
+            document.getElementById('empPhone').value = employee.phone;
+            document.getElementById('empAddress').value = employee.address;
+            
+            // Update form submission to handle edit
+            const form = document.getElementById('addEmployeeForm');
+            form.onsubmit = function(e) {
+                e.preventDefault();
+                
+                employees[index] = {
+                    id: document.getElementById('empId').value,
+                    name: document.getElementById('empName').value,
+                    department: document.getElementById('empDepartment').value,
+                    position: document.getElementById('empPosition').value,
+                    salary: document.getElementById('empSalary').value,
+                    email: document.getElementById('empEmail').value,
+                    joinDate: document.getElementById('empJoinDate').value,
+                    phone: document.getElementById('empPhone').value,
+                    address: document.getElementById('empAddress').value
+                };
+                
+                localStorage.setItem('employees', JSON.stringify(employees));
+                updateEmployeeTable();
+                alert('Employee updated successfully!');
+                document.querySelector('.modal').remove();
+            };
+        }
+
+        // Add this function to calculate payroll for an employee
+        function calculatePayroll(employee, month) {
+            const settings = initializeSettings();
+            const basicSalary = parseFloat(employee.salary);
+            
+            // Calculate deductions based on settings
+            const nhif = settings.nhifEnabled ? calculateNHIF(basicSalary) : 0;
+            const nssf = settings.nssfEnabled ? calculateNSSF(basicSalary) : 0;
+            const paye = settings.payeEnabled ? calculatePAYE(basicSalary) : 0;
+            
+            const totalDeductions = nhif + nssf + paye;
+            const netSalary = basicSalary - totalDeductions;
+            
+            return {
+                employeeId: employee.id,
+                employeeName: employee.name,
+                month: month,
+                basicSalary: basicSalary,
+                deductions: {
+                    nhif: nhif,
+                    nssf: nssf,
+                    paye: paye,
+                    total: totalDeductions
+                },
+                netSalary: netSalary
+            };
+        }
+
+        // Kenya NHIF rates
+        function calculateNHIF(grossPay) {
+            if (grossPay <= 5999) return 150;
+            if (grossPay <= 7999) return 300;
+            if (grossPay <= 11999) return 400;
+            if (grossPay <= 14999) return 500;
+            if (grossPay <= 19999) return 600;
+            if (grossPay <= 24999) return 750;
+            if (grossPay <= 29999) return 850;
+            if (grossPay <= 34999) return 900;
+            if (grossPay <= 39999) return 950;
+            if (grossPay <= 44999) return 1000;
+            if (grossPay <= 49999) return 1100;
+            if (grossPay <= 59999) return 1200;
+            if (grossPay <= 69999) return 1300;
+            if (grossPay <= 79999) return 1400;
+            if (grossPay <= 89999) return 1500;
+            return 1700;
+        }
+
+        // Kenya NSSF rates (Tier I)
+        function calculateNSSF(grossPay) {
+            return Math.min(grossPay * 0.06, 1080); // 6% up to maximum of 18,000
+        }
+
+        // Kenya PAYE rates
+        function calculatePAYE(grossPay) {
+            let tax = 0;
+            let taxableAmount = grossPay;
+            
+            if (taxableAmount > 24000) {
+                if (taxableAmount <= 32333) {
+                    tax = (taxableAmount - 24000) * 0.25;
+                } else {
+                    tax = (8333 * 0.25) + ((taxableAmount - 32333) * 0.30);
+                }
+            }
+            
+            return tax;
+        }
+
+        function generatePayroll() {
+            const month = document.getElementById('payrollMonth').value;
+            const department = document.getElementById('payrollDepartment').value;
+            const employees = initializeEmployeeData();
+            
+            // Filter employees by department if selected
+            const filteredEmployees = department 
+                ? employees.filter(emp => emp.department === department)
+                : employees;
+            
+            // Generate payroll for each employee
+            const payrollData = filteredEmployees.map(emp => calculatePayroll(emp, month));
+            
+            // Save payroll record
+            savePayrollRecord({
+                month: month,
+                department: department || 'All',
+                generatedDate: new Date().toISOString(),
+                data: payrollData,
+                totals: calculatePayrollTotals(payrollData)
+            });
+            
+            // Display results
+            displayPayrollResults(payrollData);
+        }
+
+        function displayPayrollResults(payrollData) {
+            const resultsDiv = document.getElementById('payrollResults');
+            const tableDiv = document.getElementById('payrollTable');
+            
+            // Calculate totals
+            const totals = payrollData.reduce((acc, curr) => ({
+                basicSalary: acc.basicSalary + curr.basicSalary,
+                totalDeductions: acc.totalDeductions + curr.deductions.total,
+                netSalary: acc.netSalary + curr.netSalary
+            }), { basicSalary: 0, totalDeductions: 0, netSalary: 0 });
+            
+            // Create table HTML
+            const tableHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Employee ID</th>
+                            <th>Name</th>
+                            <th>Basic Salary</th>
+                            <th>NHIF</th>
+                            <th>NSSF</th>
+                            <th>PAYE</th>
+                            <th>Total Deductions</th>
+                            <th>Net Salary</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${payrollData.map(data => `
+                            <tr>
+                                <td>${data.employeeId}</td>
+                                <td>${data.employeeName}</td>
+                                <td>KES ${data.basicSalary.toLocaleString()}</td>
+                                <td>KES ${data.deductions.nhif.toLocaleString()}</td>
+                                <td>KES ${data.deductions.nssf.toLocaleString()}</td>
+                                <td>KES ${data.deductions.paye.toLocaleString()}</td>
+                                <td>KES ${data.deductions.total.toLocaleString()}</td>
+                                <td>KES ${data.netSalary.toLocaleString()}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2"><strong>Totals</strong></td>
+                            <td><strong>KES ${totals.basicSalary.toLocaleString()}</strong></td>
+                            <td colspan="3"></td>
+                            <td><strong>KES ${totals.totalDeductions.toLocaleString()}</strong></td>
+                            <td><strong>KES ${totals.netSalary.toLocaleString()}</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            `;
+            
+            tableDiv.innerHTML = tableHTML;
+            resultsDiv.style.display = 'block';
+        }
+
+        // Add function to download payroll as PDF (you'll need to include jsPDF library)
+        function downloadPayrollPDF() {
+            alert('PDF download functionality will be implemented here');
+            // Implementation for PDF download would go here
+        }
+
+        // Add these report generation functions
+        function generatePayrollReport() {
+            const employees = initializeEmployeeData();
+            const currentDate = new Date();
+            const month = currentDate.toLocaleString('default', { month: 'long' });
+            const year = currentDate.getFullYear();
+            
+            const reportData = employees.map(emp => calculatePayroll(emp, `${year}-${currentDate.getMonth() + 1}`));
+            
+            const reportHTML = `
+                <div class="report-container">
+                    <div class="report-header">
+                        <h3>Payroll Report - ${month} ${year}</h3>
+                        <p>Generated on: ${new Date().toLocaleDateString()}</p>
+                    </div>
+                    <div class="report-summary">
+                        <div class="summary-item">
+                            <h4>Total Employees</h4>
+                            <p>${employees.length}</p>
+                        </div>
+                        <div class="summary-item">
+                            <h4>Total Payroll</h4>
+                            <p>KES ${reportData.reduce((sum, emp) => sum + emp.basicSalary, 0).toLocaleString()}</p>
+                        </div>
+                        <div class="summary-item">
+                            <h4>Total Deductions</h4>
+                            <p>KES ${reportData.reduce((sum, emp) => sum + emp.deductions.total, 0).toLocaleString()}</p>
+                        </div>
+                    </div>
+                    <div class="report-details">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Employee ID</th>
+                                    <th>Name</th>
+                                    <th>Basic Salary</th>
+                                    <th>Total Deductions</th>
+                                    <th>Net Salary</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${reportData.map(data => `
+                                    <tr>
+                                        <td>${data.employeeId}</td>
+                                        <td>${data.employeeName}</td>
+                                        <td>KES ${data.basicSalary.toLocaleString()}</td>
+                                        <td>KES ${data.deductions.total.toLocaleString()}</td>
+                                        <td>KES ${data.netSalary.toLocaleString()}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            
+            showReportModal('Payroll Report', reportHTML);
+        }
+
+        function generateEmployeeReport() {
+            const employees = initializeEmployeeData();
+            
+            // Group employees by department
+            const departmentGroups = employees.reduce((groups, emp) => {
+                const dept = emp.department || 'Unassigned';
+                if (!groups[dept]) groups[dept] = [];
+                groups[dept].push(emp);
+                return groups;
+            }, {});
+            
+            const reportHTML = `
+                <div class="report-container">
+                    <div class="report-header">
+                        <h3>Employee Report</h3>
+                        <p>Generated on: ${new Date().toLocaleDateString()}</p>
+                    </div>
+                    <div class="report-summary">
+                        <div class="summary-item">
+                            <h4>Total Employees</h4>
+                            <p>${employees.length}</p>
+                        </div>
+                        <div class="summary-item">
+                            <h4>Departments</h4>
+                            <p>${Object.keys(departmentGroups).length}</p>
+                        </div>
+                    </div>
+                    ${Object.entries(departmentGroups).map(([dept, emps]) => `
+                        <div class="department-section">
+                            <h4>${dept} Department (${emps.length} employees)</h4>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Position</th>
+                                        <th>Join Date</th>
+                                        <th>Contact</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${emps.map(emp => `
+                                        <tr>
+                                            <td>${emp.id}</td>
+                                            <td>${emp.name}</td>
+                                            <td>${emp.position}</td>
+                                            <td>${emp.joinDate}</td>
+                                            <td>${emp.email}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            showReportModal('Employee Report', reportHTML);
+        }
+
+        function generateTaxReport() {
+            const employees = initializeEmployeeData();
+            const currentDate = new Date();
+            const month = currentDate.toLocaleString('default', { month: 'long' });
+            const year = currentDate.getFullYear();
+            
+            const reportData = employees.map(emp => {
+                const payroll = calculatePayroll(emp, `${year}-${currentDate.getMonth() + 1}`);
+                return {
+                    ...payroll,
+                    taxBreakdown: {
+                        paye: payroll.deductions.paye,
+                        nhif: payroll.deductions.nhif,
+                        nssf: payroll.deductions.nssf
+                    }
+                };
+            });
+            
+            const totalTax = reportData.reduce((sum, emp) => 
+                sum + emp.taxBreakdown.paye + emp.taxBreakdown.nhif + emp.taxBreakdown.nssf, 0);
+            
+            const reportHTML = `
+                <div class="report-container">
+                    <div class="report-header">
+                        <h3>Tax Report - ${month} ${year}</h3>
+                        <p>Generated on: ${new Date().toLocaleDateString()}</p>
+                    </div>
+                    <div class="report-summary">
+                        <div class="summary-item">
+                            <h4>Total Tax Collection</h4>
+                            <p>KES ${totalTax.toLocaleString()}</p>
+                        </div>
+                        <div class="summary-item">
+                            <h4>Total Employees</h4>
+                            <p>${employees.length}</p>
+                        </div>
+                    </div>
+                    <div class="report-details">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Employee ID</th>
+                                    <th>Name</th>
+                                    <th>PAYE</th>
+                                    <th>NHIF</th>
+                                    <th>NSSF</th>
+                                    <th>Total Tax</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${reportData.map(data => `
+                                    <tr>
+                                        <td>${data.employeeId}</td>
+                                        <td>${data.employeeName}</td>
+                                        <td>KES ${data.taxBreakdown.paye.toLocaleString()}</td>
+                                        <td>KES ${data.taxBreakdown.nhif.toLocaleString()}</td>
+                                        <td>KES ${data.taxBreakdown.nssf.toLocaleString()}</td>
+                                        <td>KES ${(data.taxBreakdown.paye + data.taxBreakdown.nhif + data.taxBreakdown.nssf).toLocaleString()}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            
+            showReportModal('Tax Report', reportHTML);
+        }
+
+        // Add helper function to show report modal
+        function showReportModal(title, content) {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.innerHTML = `
+                <div class="modal-content report-modal">
+                    <div class="modal-header">
+                        <h2>${title}</h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        ${content}
+                    </div>
+                    <div class="modal-footer">
+                        <button onclick="printReport()" class="submit-btn">Print Report</button>
+                        <button onclick="downloadReportPDF()" class="submit-btn">Download PDF</button>
+                    </div>
+                </div>
+            `;
+
+            // Add styles for the report modal
+            const style = document.createElement('style');
+            style.textContent = `
+                .report-modal {
+                    width: 90%;
+                    max-width: 1200px;
+                }
+                
+                .report-container {
+                    padding: 20px;
+                }
+                
+                .report-header {
+                    margin-bottom: 20px;
+                    text-align: center;
+                }
+                
+                .report-summary {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 30px;
+                }
+                
+                .summary-item {
+                    background: #f8f9fa;
+                    padding: 15px;
+                    border-radius: 5px;
+                    text-align: center;
+                }
+                
+                .department-section {
+                    margin-bottom: 30px;
+                }
+                
+                .department-section h4 {
+                    margin-bottom: 15px;
+                    color: var(--primary);
+                }
+                
+                @media print {
+                    .modal-header, .modal-footer {
+                        display: none;
+                    }
+                    
+                    .modal-content {
+                        box-shadow: none;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            document.body.appendChild(modal);
+
+            // Close button functionality
+            const closeBtn = modal.querySelector('.close');
+            closeBtn.onclick = () => {
+                modal.remove();
+                style.remove();
+            };
+        }
+
+        // Add print and download functions
+        function printReport() {
+            window.print();
+        }
+
+        function downloadReportPDF() {
+            alert('PDF download functionality will be implemented here');
+            // Implementation for PDF download would go here
+        }
+
+        // Update the reports section content
+        sectionContent.reports = `
+            <div class="header">
+                <h2>Reports</h2>
+            </div>
+            <div class="reports-grid">
+                <div class="card">
+                    <h3>Payroll Reports</h3>
+                    <p>Generate comprehensive payroll reports including salary details and deductions.</p>
+                    <button class="submit-btn" onclick="generatePayrollReport()">Generate Report</button>
+                </div>
+                <div class="card">
+                    <h3>Employee Reports</h3>
+                    <p>View detailed employee information grouped by department.</p>
+                    <button class="submit-btn" onclick="generateEmployeeReport()">Generate Report</button>
+                </div>
+                <div class="card">
+                    <h3>Tax Reports</h3>
+                    <p>Generate tax reports including PAYE, NHIF, and NSSF deductions.</p>
+                    <button class="submit-btn" onclick="generateTaxReport()">Generate Report</button>
+                </div>
+            </div>
+        `;
+
+        // Add this function to initialize payroll data storage
+        function initializePayrollData() {
+            if (!localStorage.getItem('payrollRecords')) {
+                localStorage.setItem('payrollRecords', JSON.stringify([]));
+            }
+            return JSON.parse(localStorage.getItem('payrollRecords'));
+        }
+
+        // Add function to calculate payroll totals
+        function calculatePayrollTotals(payrollData) {
+            return payrollData.reduce((acc, curr) => ({
+                basicSalary: acc.basicSalary + curr.basicSalary,
+                totalDeductions: acc.totalDeductions + curr.deductions.total,
+                netSalary: acc.netSalary + curr.netSalary,
+                nhif: acc.nhif + curr.deductions.nhif,
+                nssf: acc.nssf + curr.deductions.nssf,
+                paye: acc.paye + curr.deductions.paye
+            }), {
+                basicSalary: 0,
+                totalDeductions: 0,
+                netSalary: 0,
+                nhif: 0,
+                nssf: 0,
+                paye: 0
+            });
+        }
+
+        // Add function to save payroll record
+        function savePayrollRecord(record) {
+            const payrollRecords = initializePayrollData();
+            payrollRecords.push(record);
+            localStorage.setItem('payrollRecords', JSON.stringify(payrollRecords));
+        }
+
+        // Update the payroll section content to include history
+        sectionContent.payroll = `
+            <div class="header">
+                <h2>Payroll Management</h2>
+            </div>
+            <div class="payroll-section">
+                <div class="card">
+                    <h3>Generate Payroll</h3>
+                    <form id="payrollForm" class="payroll-form">
+                        <div class="form-group">
+                            <label>Select Month</label>
+                            <input type="month" id="payrollMonth" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Department</label>
+                            <select id="payrollDepartment">
+                                <option value="">All Departments</option>
+                                <option value="IT">IT</option>
+                                <option value="HR">HR</option>
+                                <option value="Finance">Finance</option>
+                                <option value="Marketing">Marketing</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="submit-btn">Generate Payroll</button>
+                    </form>
+                </div>
+                <div id="payrollResults" class="card" style="display: none;">
+                    <h3>Payroll Results</h3>
+                    <div class="payroll-summary">
+                        <div id="payrollTable"></div>
+                        <div class="payroll-totals"></div>
+                    </div>
+                    <button onclick="downloadPayrollPDF()" class="submit-btn">Download PDF</button>
+                </div>
+                <div class="card">
+                    <h3>Payroll History</h3>
+                    <div id="payrollHistory"></div>
+                </div>
+            </div>
+        `;
+
+        // Add function to display payroll history
+        function displayPayrollHistory() {
+            const historyDiv = document.getElementById('payrollHistory');
+            const records = initializePayrollData();
+            
+            if (records.length === 0) {
+                historyDiv.innerHTML = '<p>No payroll records found.</p>';
+                return;
+            }
+            
+            const historyHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>Department</th>
+                            <th>Generated Date</th>
+                            <th>Total Net Salary</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${records.map((record, index) => `
+                            <tr>
+                                <td>${new Date(record.month).toLocaleDateString('default', { month: 'long', year: 'numeric' })}</td>
+                                <td>${record.department}</td>
+                                <td>${new Date(record.generatedDate).toLocaleDateString()}</td>
+                                <td>KES ${record.totals.netSalary.toLocaleString()}</td>
+                                <td>
+                                    <button onclick="viewPayrollRecord(${index})" class="edit-btn">View</button>
+                                    <button onclick="deletePayrollRecord(${index})" class="delete-btn">Delete</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            
+            historyDiv.innerHTML = historyHTML;
+        }
+
+        // Add function to view a specific payroll record
+        function viewPayrollRecord(index) {
+            const records = initializePayrollData();
+            const record = records[index];
+            displayPayrollResults(record.data);
+            document.getElementById('payrollResults').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Add function to delete a payroll record
+        function deletePayrollRecord(index) {
+            if (confirm('Are you sure you want to delete this payroll record?')) {
+                const records = initializePayrollData();
+                records.splice(index, 1);
+                localStorage.setItem('payrollRecords', JSON.stringify(records));
+                displayPayrollHistory();
+            }
+        }
+
+        // Add some additional styles
+        const style = document.createElement('style');
+        style.textContent = `
+            .payroll-section {
+                display: grid;
+                gap: 20px;
+            }
+            
+            #payrollHistory table {
+                width: 100%;
+                margin-top: 15px;
+            }
+            
+            #payrollHistory th,
+            #payrollHistory td {
+                padding: 10px;
+                text-align: left;
+            }
+            
+            #payrollHistory .edit-btn,
+            #payrollHistory .delete-btn {
+                padding: 5px 10px;
+                margin: 0 5px;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add settings storage initialization
+        function initializeSettings() {
+            if (!localStorage.getItem('payrollSettings')) {
+                localStorage.setItem('payrollSettings', JSON.stringify({
+                    companyName: 'PayrollPro',
+                    taxRate: 20,
+                    payDay: 25,
+                    nhifEnabled: true,
+                    nssfEnabled: true,
+                    payeEnabled: true
+                }));
+            }
+            return JSON.parse(localStorage.getItem('payrollSettings'));
+        }
+
+        // Update settings section content
+        sectionContent.settings = `
+            <div class="header">
+                <h2>Settings</h2>
+            </div>
+            <div class="settings-section">
+                <div class="card">
+                    <h3>System Settings</h3>
+                    <form id="settingsForm" class="settings-form">
+                        <div class="form-group">
+                            <label>Company Name</label>
+                            <input type="text" id="companyName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Tax Rate (%)</label>
+                            <input type="number" id="taxRate" min="0" max="100" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Pay Day</label>
+                            <input type="number" id="payDay" min="1" max="31" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Deductions</label>
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="nhifEnabled"> Enable NHIF
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="nssfEnabled"> Enable NSSF
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="payeEnabled"> Enable PAYE
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-btn">Save Settings</button>
+                    </form>
+                </div>
+            </div>
+        `;
+
+        // Add function to initialize settings form
+        function initializeSettingsForm() {
+            const settings = initializeSettings();
+            const form = document.getElementById('settingsForm');
+            
+            if (form) {
+                // Fill form with current settings
+                document.getElementById('companyName').value = settings.companyName;
+                document.getElementById('taxRate').value = settings.taxRate;
+                document.getElementById('payDay').value = settings.payDay;
+                document.getElementById('nhifEnabled').checked = settings.nhifEnabled;
+                document.getElementById('nssfEnabled').checked = settings.nssfEnabled;
+                document.getElementById('payeEnabled').checked = settings.payeEnabled;
+                
+                // Add form submission handler
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Save new settings
+                    const newSettings = {
+                        companyName: document.getElementById('companyName').value,
+                        taxRate: parseFloat(document.getElementById('taxRate').value),
+                        payDay: parseInt(document.getElementById('payDay').value),
+                        nhifEnabled: document.getElementById('nhifEnabled').checked,
+                        nssfEnabled: document.getElementById('nssfEnabled').checked,
+                        payeEnabled: document.getElementById('payeEnabled').checked
+                    };
+                    
+                    localStorage.setItem('payrollSettings', JSON.stringify(newSettings));
+                    
+                    // Recalculate all payroll records with new settings
+                    recalculateAllPayrolls();
+                    
+                    alert('Settings saved successfully! All payroll records have been updated.');
+                });
+            }
+        }
+
+        // Add function to recalculate payroll with current settings
+        function recalculateAllPayrolls() {
+            const payrollRecords = initializePayrollData();
+            const employees = initializeEmployeeData();
+            
+            // Recalculate each payroll record
+            const updatedRecords = payrollRecords.map(record => {
+                const filteredEmployees = record.department !== 'All'
+                    ? employees.filter(emp => emp.department === record.department)
+                    : employees;
+                    
+                const payrollData = filteredEmployees.map(emp => 
+                    calculatePayroll(emp, record.month));
+                    
+                return {
+                    ...record,
+                    data: payrollData,
+                    totals: calculatePayrollTotals(payrollData)
+                };
+            });
+            
+            // Save updated records
+            localStorage.setItem('payrollRecords', JSON.stringify(updatedRecords));
+            
+            // If currently on payroll page, refresh the display
+            if (document.querySelector('.nav-item.active').textContent.toLowerCase() === 'payroll') {
+                displayPayrollHistory();
+                const currentResults = document.getElementById('payrollResults');
+                if (currentResults.style.display !== 'none') {
+                    // Refresh current payroll display if visible
+                    const currentMonth = document.getElementById('payrollMonth').value;
+                    const currentDepartment = document.getElementById('payrollDepartment').value;
+                    generatePayroll();
+                }
+            }
+        }
+
+        // Add some additional styles
+        const settingsStyles = document.createElement('style');
+        settingsStyles.textContent = `
+            .settings-form {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            .checkbox-group {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                margin-top: 5px;
+            }
+
+            .checkbox-group label {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                cursor: pointer;
+            }
+
+            .checkbox-group input[type="checkbox"] {
+                width: auto;
+            }
+
+            .settings-form .submit-btn {
+                margin-top: 20px;
+            }
+        `;
+        document.head.appendChild(settingsStyles);
+    </script>
+</body>
+</html>
